@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IProduct } from '../../types/product'
 import { Button, Form, Input } from 'antd';
+import axios from 'axios';
 interface IProps {
     products: IProduct[],
     onUpdate: (product: IProduct) => void
@@ -43,7 +44,11 @@ const UpdateProductPage = (props: IProps) => {
     }
 
     const onFinish = (values: any) => {
-        props.onUpdate(values);
+        props.onUpdate({
+            id: values.id,
+            name: values.name,
+            price: +(values.price)
+        });
         navigate('/admin/products')
     };
 
@@ -58,7 +63,7 @@ const UpdateProductPage = (props: IProps) => {
 
             <Form
                 form={form}
-                style={{ maxWidth: 600 }}
+                style={{ maxWidth: 600, margin: 'auto', marginTop: 100 }}
                 onFinish={onFinish}
             >
                 {/* đoạn này cần truyền cả id vào form khi submit để lấy được giá trị id truyền lên component App */}
@@ -67,6 +72,7 @@ const UpdateProductPage = (props: IProps) => {
                     name="id"
                     style={{ display: 'none' }} // ẩn input này đi
                     rules={[{ required: true, message: 'Please input your username!' }]}
+
                 >
                     <Input />
                 </Form.Item>
